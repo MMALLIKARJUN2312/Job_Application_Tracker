@@ -4,6 +4,7 @@ import cors from 'cors';
 import connectDatabase from './config/db.js';
 import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import jobRoutes from './routes/jobRoutes.js'
 
 // Load environment variables
 dotenv.config()
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use('/api/auth',authRoutes);
 app.use('/api/user', userRoutes)
+app.use('/api/jobs', jobRoutes);
 
 app.get('/', (req,res) => {
     res.send("API is running...")

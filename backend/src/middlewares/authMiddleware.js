@@ -2,20 +2,21 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js'
 
 export const protectedRoute = async (req, res, next) => {
-    let token;
+    try {
 
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-        try {
-            token = req.headers.authorization.split(" ")[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.id).select("-password");
-            next();
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({message : "No token provided"});
         }
-        catch (error) {
-           res.status(401).json({message : "Unauthorized"});
-       }
-    } 
-    else {
-        res.status(401).json({message : "No token provided"})
+
+        const token = authHeader.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.userId = decoded.userId;
+
+        next();
+    } catch (error) {
+        console.error("Auth Error : ", error.message);
+        return res.status(401).json({message : "Invalid token"})
     }
 }
