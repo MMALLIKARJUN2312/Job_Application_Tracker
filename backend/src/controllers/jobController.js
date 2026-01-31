@@ -17,8 +17,10 @@ export const createJob = async (req, res) => {
             createdBy : req.userId
         });
 
+
         res.status(201).json(job);
     } catch (error) {
+        console.error("Creating a job : ", error.message)
         res.status(500).json({message : "Internal Server error"});
     }
 }
@@ -28,6 +30,7 @@ export const getAllJobs = async (req, res) => {
         const jobs = await Job.find({createdBy : req.userId}).sort("-createdAt");
         res.status(200).json(jobs);
     } catch (error) {
+        console.error("Fetching all jobs : ", error.message);
         res.status(500).json({message : "Internal Server error"});
     }
 }
@@ -51,6 +54,7 @@ export const updateJob = async (req, res) => {
 
         res.status(200).json(job);
     } catch (error) {
+        console.error("Updating a job : ", error.message);
         res.status(500).json({message : "Internal Server error"});
     }
 }
@@ -68,6 +72,7 @@ export const deleteJob = async (req, res) => {
 
         res.status(200).json({message : "Job deleted successfully"})
     } catch(error) {
+        console.error("Deleting a job : ", error.message);
         res.status(500).json({message : "Internal Server error"});
     }
 }
