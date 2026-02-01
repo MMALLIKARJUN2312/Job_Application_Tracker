@@ -1,78 +1,72 @@
 import Job from '../models/Job.js';
+import AppError from '../utils/errorHandler.js'
+import asyncWrapper from '../utils/asyncHandler.js';
 
-export const createJob = async (req, res) => {
-    try {
-        const {company, position, status} = req.body;
+export const createJob = asyncWrapper(async (req, res) => {
 
-        // Input Validation
-        if (!company || !position) {
-            return res.status(400).json({message : "Company and Position fields are required"});
-        }
+    const { company, position, status } = req.body;
 
-        // Create a Job
-        const job = await Job.create({
-            company, 
-            position, 
-            status,
-            createdBy : req.userId
-        });
-
-
-        res.status(201).json(job);
-    } catch (error) {
-        console.error("Creating a job : ", error.message)
-        res.status(500).json({message : "Internal Server error"});
+    // Input Validation
+    if (!company || !position) {
+        throw new AppError("Company and Position fields are required", 400);
     }
-}
 
-export const getAllJobs = async (req, res) => {
-    try {
-        const jobs = await Job.find({createdBy : req.userId}).sort("-createdAt");
-        res.status(200).json(jobs);
-    } catch (error) {
-        console.error("Fetching all jobs : ", error.message);
-        res.status(500).json({message : "Internal Server error"});
+    // User Validation
+    if (!req.userid) {
+        throw new AppError("Unauthorized", 401);
     }
-}
 
-export const updateJob = async (req, res) => {
-    try {
-        const job = await Job.findOne({
-            _id : req.params.id,
-            createdBy : req.userId
-        });
+    // Create a Job
+    const job = await Job.create({
+        company,
+        position,
+        status,
+        createdBy: req.userId
+    });
 
-        if (!job) {
-            return res.status(404).json({message : "Job not found"});
-        }
+    res.status(201).json(job);
+});
 
-        job.company = req.body.company || job.company;
-        job.position = req.body.position || job.position;
-        job.status = req.body.status || job.status;
+export const getAllJobs = asyncWrapper(async (req, res) => {
 
-        await job.save();
-
-        res.status(200).json(job);
-    } catch (error) {
-        console.error("Updating a job : ", error.message);
-        res.status(500).json({message : "Internal Server error"});
+    // User Validation
+    if (!req.userId) {
+        throw new AppError("Unauthorized", 401);
     }
-}
 
-export const deleteJob = async (req, res) => {
-    try {
-        const job = await Job.findOneAndDelete({
-            _id : req.params.id,
-            createdBy : req.userId
-        });
+    const jobs = await Job.find({ createdBy: req.userId }).sort("-createdAt");
+    res.status(200).json(jobs);
+});
 
-        if (!job) {
-            return res.status(404).json({message : "Job not found"});
-        }
+export const updateJob = asyncWrapper(async (req, res) => {
+    const job = await Job.findOne({
+        _id: req.params.id,
+        createdBy: req.userId
+    });
 
-        res.status(200).json({message : "Job deleted successfully"})
-    } catch(error) {
-        console.error("Deleting a job : ", error.message);
-        res.status(500).json({message : "Internal Server error"});
+    if (!job) {
+        throw new AppError("Job not found", 404);
     }
-}
+
+    // Job details
+    job.company = req.body.company || job.company;
+    job.position = req.body.position || job.position;
+    job.status = req.body.status || job.status;
+
+    await job.save();
+
+    res.status(200).json(job);
+});
+
+export const deleteJob = asyncWrapper(async (req, res) => {
+    const job = await Job.findOneAndDelete({
+        _id: req.params.id,
+        createdBy: req.userId
+    });
+
+    if (!job) {
+        throw new AppError("Job not found", 404);
+    }
+
+    res.status(200).json({ message: "Job deleted successfully" })
+})
