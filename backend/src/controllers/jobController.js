@@ -11,11 +11,6 @@ export const createJob = asyncWrapper(async (req, res) => {
         throw new AppError("Company and Position fields are required", 400);
     }
 
-    // User Validation
-    if (!req.userid) {
-        throw new AppError("Unauthorized", 401);
-    }
-
     // Create a Job
     const job = await Job.create({
         company,
@@ -28,11 +23,6 @@ export const createJob = asyncWrapper(async (req, res) => {
 });
 
 export const getAllJobs = asyncWrapper(async (req, res) => {
-
-    // User Validation
-    if (!req.userId) {
-        throw new AppError("Unauthorized", 401);
-    }
 
     const jobs = await Job.find({ createdBy: req.userId }).sort("-createdAt");
     res.status(200).json(jobs);
