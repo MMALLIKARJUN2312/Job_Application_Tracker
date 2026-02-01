@@ -24,8 +24,42 @@ export const createJob = asyncWrapper(async (req, res) => {
 
 export const getAllJobs = asyncWrapper(async (req, res) => {
 
-    const jobs = await Job.find({ createdBy: req.userId }).sort("-createdAt");
-    res.status(200).json(jobs);
+    // Filtering
+    const queryObject = {
+        createdBy : req.userId
+    }
+
+    if (req.query.status) {
+        queryObject.status = req.query.status;
+    }
+
+    // Sorting
+    let sortBy = "-createdAt";
+
+    if (req.query.sort === "oldest") {
+        sortBy = "createdAt";
+    } 
+
+    // Pagination
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const jobs = await Job.find(queryObject)
+        .sort(sortBy)
+        .skip(skip)
+        .limit(limit)
+
+    const totalJobs = await Job.countDocuments(queryObject);
+    const totalPages = Math.ceil(totalJobs/limit);
+
+    res.status(200).json({
+        totalJobs,
+        totalPages,
+        currentPage : page,
+        count : jobs.length,
+        jobs
+    });
 });
 
 export const updateJob = asyncWrapper(async (req, res) => {
