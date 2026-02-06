@@ -1,8 +1,8 @@
 import {useState, useEffect} from 'react';
-import fetchingJobs from '../api/fetchJobs';
+import {fetchJobs} from '../api/getJobs';
 
 const Jobs = () => {
-    const [jobs, setJobs] = useState();
+    const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -14,13 +14,13 @@ const Jobs = () => {
         const loadJobs = async () => {
             try {
                 setLoading(true);
-                const data = await fetchingJobs({
+                const data = await fetchJobs({
                     page, 
                     limit : 10,
                     status,
                     sort
                 });
-                setJobs(data.jobs);
+                setJobs(data.jobs || []);
             } catch (error) {
                 setError("Failed to load the jobs");
             } finally {

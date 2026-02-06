@@ -2,11 +2,11 @@ import apiInstance from './axios.js';
 
 // Fetching jobs with pagination, filtering and sorting
 
-export const fetchingJobs = async ({ page, limit, status, sort }) => {
+export const fetchJobs = async ({ page, limit, status, sort }) => {
     const params = {};
 
     if (page) {
-        params.age = age;
+        params.page = page;
     }
 
     if (limit) {
@@ -25,5 +25,3 @@ export const fetchingJobs = async ({ page, limit, status, sort }) => {
     
     return response.data;
 }
-
-export default fetchingJobs

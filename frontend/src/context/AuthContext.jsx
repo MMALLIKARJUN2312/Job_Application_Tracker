@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     if (loading) {
-        return null;
+        return <div>Loading app ...</div>;
     }
 
     return (<AuthContext.Provider value={value}>{children}</AuthContext.Provider>);
