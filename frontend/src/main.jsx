@@ -7,8 +7,6 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import Jobs from './pages/Jobs'
 import App from './App'
 
-const Login = () => <h2>Login Page</h2>
-
 const appRouter = createBrowserRouter([
   {
     path : "/",
