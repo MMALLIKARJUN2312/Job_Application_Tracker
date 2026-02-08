@@ -5,7 +5,10 @@ import { RouterProvider } from 'react-router'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './routes/ProtectedRoute'
 import Jobs from './pages/Jobs'
+import Login from './pages/Login'
 import App from './App'
+import './index.css'
+
 
 const appRouter = createBrowserRouter([
   {
