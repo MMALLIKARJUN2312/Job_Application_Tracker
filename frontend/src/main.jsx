@@ -6,31 +6,40 @@ import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './routes/ProtectedRoute'
 import Jobs from './pages/Jobs'
 import Login from './pages/Login'
+import CreateJob from "./pages/CreateJob";
 import App from './App'
 import './index.css'
 
 
 const appRouter = createBrowserRouter([
   {
-    path : "/",
-    element : <App />,
-    children : [
+    path: "/",
+    element: <App />,
+    children: [
       {
-        index : true,
-        element : <Navigate to = "jobs" replace />,
+        index: true,
+        element: <Navigate to="jobs" replace />,
       },
       {
         path: "login",
         element: <Login />
       },
       {
-        path : "jobs",
-        element : (
+        path: "jobs",
+        element: (
           <ProtectedRoute>
             <Jobs />
           </ProtectedRoute>
         ),
       },
+      {
+        path: "jobs/new",
+        element: (
+          <ProtectedRoute>
+            <CreateJob />
+          </ProtectedRoute>
+        ),
+      }
     ],
   },
 ])
