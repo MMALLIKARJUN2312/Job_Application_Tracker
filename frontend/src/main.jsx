@@ -7,6 +7,7 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import Jobs from './pages/Jobs'
 import Login from './pages/Login'
 import CreateJob from "./pages/CreateJob";
+import EditJob from "./pages/EditJob";
 import App from './App'
 import './index.css'
 

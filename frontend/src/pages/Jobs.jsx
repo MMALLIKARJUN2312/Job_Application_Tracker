@@ -80,6 +80,31 @@ const Jobs = () => {
                     + Add Job
                 </Link>
             </div>
+
+            // Filters and Sorting
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mx-6 mb-6">
+                <select value={status} onChange={(event) => {
+                    setPage(1);
+                    setStatus(event.target.value)
+                }} className="text-sm border rounded-md px-3 py-2">
+                    <option value="">All Status</option>
+                    <option value="applied">Applied</option>
+                    <option value="interview">Interview</option>
+                    <option value="offer">Offer</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+
+                <select value={sort} onChange={(event) => {
+                    setPage(1);
+                    setSort(event.target.value)
+                }} className="text-sm border rounded-md px-3 py-2">
+                    <option value="latest">Latest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="a-z">Company A-Z</option>
+                    <option value="z-a">Company Z-A</option>
+                </select>
+            </div>
             <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 m-6'>
                 {
                     jobs.map((job) => (
@@ -88,13 +113,27 @@ const Jobs = () => {
                             <p className="font-semibold mt-1">{job.position}</p>
                             <span className="inline-block text-xs capitalize font-medium rounded-full bg-purple-600 text-white px-3 py-2 mt-4">{job.status}</span>
 
-                            <div className = "flex gap-4 mt-4">
-                                <Link to = {`/jobs/${job._id}/edit`} className = "text-sm text-purple-600 hover:underline">Edit</Link>
-                                <button onClick = {() => handleDelete(job._id)} className = "text-sm tex-red-500 hover:underline">Delete</button>
+                            <div className="flex gap-4 mt-4">
+                                <Link to={`/jobs/${job._id}/edit`} className="text-sm text-purple-600 hover:underline">Edit</Link>
+                                <button onClick={() => handleDelete(job._id)} className="text-sm text-red-500 hover:underline">Delete</button>
                             </div>
                         </div>
                     ))
                 }
+            </div>
+
+            // Pagination
+
+            <div className='flex items-center justify-center gap-4 mt-8'>
+                <button onClick = {() => setPage((previous) => Math.max(previous - 1, 1))} disabled = {page === 1} className = "bg-gray-200 rounded disabled:opacity-50 px-4 py-2">
+                    Previous
+                </button>
+
+                <span className = "text-sm font-medium">Page {page}</span>
+
+                <button onClick = {() => setPage((previous) => previous + 1)} className = "bg-gray-200 rounded px-4 py-2">
+                    Next
+                </button>
             </div>
         </div>
     )
