@@ -34,6 +34,14 @@ export const getAllJobs = asyncWrapper(async (req, res) => {
         queryObject.status = req.query.status;
     }
 
+    // Search filter
+    if (req.query.search) {
+        queryObject.$or = [
+            { company: { $regex: req.query.search, $options: "i" } },
+            { position: { $regex: req.query.search, $options: "i" } }
+        ]
+    }
+
     // Sorting
     let sortBy = "-createdAt";
 
@@ -49,15 +57,6 @@ export const getAllJobs = asyncWrapper(async (req, res) => {
             break;
         default:
             sortBy = "-createdAt";
-    }
-
-
-    // Search filter
-    if (req.query.search) {
-        queryObject.$or = [
-            { company: { $regex: req.query.search, $options: "i" } },
-            { position: { $regex: req.query.search, $options: "i" } }
-        ]
     }
 
     // Pagination
