@@ -11,6 +11,7 @@ const Jobs = () => {
     const [page, setPage] = useState(1);
     const [status, setStatus] = useState("");
     const [sort, setSort] = useState("latest")
+    const [search, setSearch] = useState("")
 
     useEffect(() => {
         const loadJobs = async () => {
@@ -20,7 +21,8 @@ const Jobs = () => {
                     page,
                     limit: 10,
                     status,
-                    sort
+                    sort,
+                    search
                 });
                 setJobs(data.jobs || []);
             } catch (error) {
@@ -81,6 +83,17 @@ const Jobs = () => {
                 </Link>
             </div>
 
+            <input
+                type="text"
+                placeholder="Search by company or position..."
+                value={search}
+                onChange={(e) => {
+                    setPage(1);
+                    setSearch(e.target.value);
+                }}
+                className="border rounded-md px-3 py-2 text-sm w-full sm:w-64"
+            />
+
             // Filters and Sorting
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mx-6 mb-6">
@@ -125,13 +138,13 @@ const Jobs = () => {
             // Pagination
 
             <div className='flex items-center justify-center gap-4 mt-8'>
-                <button onClick = {() => setPage((previous) => Math.max(previous - 1, 1))} disabled = {page === 1} className = "bg-gray-200 rounded disabled:opacity-50 px-4 py-2">
+                <button onClick={() => setPage((previous) => Math.max(previous - 1, 1))} disabled={page === 1} className="bg-gray-200 rounded disabled:opacity-50 px-4 py-2">
                     Previous
                 </button>
 
-                <span className = "text-sm font-medium">Page {page}</span>
+                <span className="text-sm font-medium">Page {page}</span>
 
-                <button onClick = {() => setPage((previous) => previous + 1)} className = "bg-gray-200 rounded px-4 py-2">
+                <button onClick={() => setPage((previous) => previous + 1)} className="bg-gray-200 rounded px-4 py-2">
                     Next
                 </button>
             </div>
