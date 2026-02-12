@@ -26,9 +26,10 @@ export const getAllJobs = asyncWrapper(async (req, res) => {
 
     // Filtering
     const queryObject = {
-        createdBy : req.userId
+        createdBy: req.userId
     }
 
+    // Status filter
     if (req.query.status) {
         queryObject.status = req.query.status;
     }
@@ -36,9 +37,28 @@ export const getAllJobs = asyncWrapper(async (req, res) => {
     // Sorting
     let sortBy = "-createdAt";
 
-    if (req.query.sort === "oldest") {
-        sortBy = "createdAt";
-    } 
+    switch (req.query.sort) {
+        case "oldest":
+            sortBy = "createdAt";
+            break;
+        case "a-z":
+            sortBy = "company";
+            break;
+        case "z-a":
+            sortBy = "-company";
+            break;
+        default:
+            sortBy = "-createdAt";
+    }
+
+
+    // Search filter
+    if (req.query.search) {
+        queryObject.$or = [
+            { company: { $regex: req.query.search, $options: "i" } },
+            { position: { $regex: req.query.search, $options: "i" } }
+        ]
+    }
 
     // Pagination
     const page = Number(req.query.page) || 1;
@@ -51,13 +71,13 @@ export const getAllJobs = asyncWrapper(async (req, res) => {
         .limit(limit)
 
     const totalJobs = await Job.countDocuments(queryObject);
-    const totalPages = Math.ceil(totalJobs/limit);
+    const totalPages = Math.ceil(totalJobs / limit);
 
     res.status(200).json({
         totalJobs,
         totalPages,
-        currentPage : page,
-        count : jobs.length,
+        currentPage: page,
+        count: jobs.length,
         jobs
     });
 });
