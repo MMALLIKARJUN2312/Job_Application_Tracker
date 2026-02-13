@@ -12,6 +12,16 @@ const Jobs = () => {
     const [status, setStatus] = useState("");
     const [sort, setSort] = useState("latest")
     const [search, setSearch] = useState("")
+    const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+    // Debounce search input
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [search]);
 
     useEffect(() => {
         const loadJobs = async () => {
@@ -22,7 +32,7 @@ const Jobs = () => {
                     limit: 10,
                     status,
                     sort,
-                    search
+                    search: debouncedSearch
                 });
                 setJobs(data.jobs || []);
             } catch (error) {
@@ -32,7 +42,7 @@ const Jobs = () => {
             }
         }
         loadJobs();
-    }, [page, status, sort]);
+    }, [page, status, sort, debouncedSearch]);
 
     const handleDelete = async (id) => {
         const confirmed = window.confirm("Are you sure you want toi delete the job?");
