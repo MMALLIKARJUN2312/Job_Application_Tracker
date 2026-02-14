@@ -113,3 +113,39 @@ export const deleteJob = asyncWrapper(async (req, res) => {
 
     res.status(200).json({ message: "Job deleted successfully" })
 })
+
+export const getJobStats = asyncWrapper(async (req, res) => {
+    const stats = await Job.aggregate([
+        {
+            $match: { createdBy: req.userId }
+        },
+        {
+            $group: {
+                _id: "$status",
+                count: { $sum: 1 }
+            }
+        }
+    ]);
+
+    const defaultStats = {
+        applied: 0,
+        interview: 0,
+        offer: 0,
+        rejected: 0
+    };
+
+    stats.forEach((item) => {
+        defaultStats[item._id] = item.count;
+    });
+
+    const totalJobs =
+        defaultStats.applied +
+        defaultStats.interview +
+        defaultStats.offer +
+        defaultStats.rejected;
+
+    res.status(200).json({
+        totalJobs,
+        ...defaultStats
+    });
+});
