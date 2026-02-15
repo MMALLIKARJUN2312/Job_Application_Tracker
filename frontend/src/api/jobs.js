@@ -34,3 +34,10 @@ export const deleteJob = async (id) => {
     const response = await apiInstance.delete(`/jobs/${id}`);
     return response.data;
 }
+
+// Get job statistics
+
+export const getJobStats = async () => {
+    const response = await apiInstance.get("/jobs/stats");
+    return response.data;
+};
