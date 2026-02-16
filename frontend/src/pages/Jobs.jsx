@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { fetchJobs } from '../api/getJobs';
 import { Link } from 'react-router'
 import { deleteJob } from '../api/jobs';
+import StatsCards from "../components/StatsCards";
+import { getJobStats } from "../api/jobs";
 
 const Jobs = () => {
     const [jobs, setJobs] = useState([]);
@@ -13,6 +15,7 @@ const Jobs = () => {
     const [sort, setSort] = useState("latest")
     const [search, setSearch] = useState("")
     const [debouncedSearch, setDebouncedSearch] = useState(search);
+    const [stats, setStats] = useState(null);
 
     // Debounce search input
     useEffect(() => {
@@ -35,6 +38,8 @@ const Jobs = () => {
                     search: debouncedSearch
                 });
                 setJobs(data.jobs || []);
+                const statsData = await getJobStats();
+                setStats(statsData);
             } catch (error) {
                 setError("Failed to load the jobs. Please try again");
             } finally {
@@ -103,6 +108,8 @@ const Jobs = () => {
                 }}
                 className="border rounded-md px-3 py-2 text-sm w-full sm:w-64"
             />
+
+            {stats && <StatsCards stats={stats} />}
 
             // Filters and Sorting
 
