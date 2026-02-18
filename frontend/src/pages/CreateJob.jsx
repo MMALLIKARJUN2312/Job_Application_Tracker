@@ -1,73 +1,89 @@
-import {useState} from 'react'
-import {useNavigate} from 'react-router'
-import {createJob} from '../api/jobs';
+import { useNavigate } from "react-router";
+import { createJob } from "../api/jobs";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const jobSchema = z.object({
+    company: z.string().min(2, "Company name must be at least 2 characters"),
+    position: z.string().min(2, "Position must be at least 2 characters"),
+    status: z.enum(["applied", "interview", "offer", "rejected"])
+});
 
 const CreateJob = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [company, setCompany] = useState("");
-  const [position, setPosition] = useState("");
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting }
+    } = useForm({
+        resolver: zodResolver(jobSchema),
+        defaultValues: {
+            status: "applied"
+        }
+    });
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    setError(""); 
+    const onSubmit = async (data) => {
+        await createJob(data);
+        navigate("/jobs");
+    };
 
-    try {
-      setLoading(true);
-      await createJob({company, position, status});
-      navigate("/jobs");
-    } catch (error) {
-      setError("Failed to create the job. Please try again");
-    }
-    finally {
-      setLoading(false)
-    }
-  }
+    return (
+        <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+            <h2 className="text-2xl font-semibold mb-6">Add New Job</h2>
 
-  return (
-    <div className = "max-w-xl bg-white rounded-lg shadow-sm mx-auto p-8">
-      <h2 className = "text-2xl font-semibold text-gray-800 mb-6">
-        Add New Job
-      </h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
-      {
-        error && (
-          <p className = "text-red-700 bg-red-100 rounded mb-4 p-3">
-            {error}
-          </p>
-        )
-      }
+                <div>
+                    <input
+                        {...register("company")}
+                        placeholder="Company"
+                        className="w-full border rounded px-4 py-2"
+                    />
+                    {errors.company && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.company.message}
+                        </p>
+                    )}
+                </div>
 
-      <form onSubmit = {handleFormSubmit} className = "space-y-5">
-        <div>
-          <label className = "block text-gray-700 mb-1">Company</label>
-          <input type = "text" value = {company} onChange = {(event) => setCompany(event.target.value)} className = "w-full border rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none px-4 py-2" required/>
+                <div>
+                    <input
+                        {...register("position")}
+                        placeholder="Position"
+                        className="w-full border rounded px-4 py-2"
+                    />
+                    {errors.position && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.position.message}
+                        </p>
+                    )}
+                </div>
+
+                <div>
+                    <select
+                        {...register("status")}
+                        className="w-full border rounded px-4 py-2"
+                    >
+                        <option value="applied">Applied</option>
+                        <option value="interview">Interview</option>
+                        <option value="offer">Offer</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+
+                <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
+                >
+                    {isSubmitting ? "Creating..." : "Create Job"}
+                </button>
+
+            </form>
         </div>
-
-        <div>
-          <label className = "block text-gray-700 mb-1">Position</label>
-          <input type = "text" value = {position} onChange={(event) => setPosition(event.target.value)} className = "w-full border rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none px-4 py-2" required/>
-        </div>
-        <div>
-          <label className = "block text-gray-700 mb-1">Status</label>
-          <select value = {status} onChange = {(event) => setStatus(event.target.value)} className = "w-full border rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none px-4 py-2" required>
-             <option value="applied">Applied</option>
-             <option value="interview">Interview</option>
-             <option value="offer">Offer</option>
-             <option value="rejected">Rejected</option>
-          </select>
-        </div>
-
-        <button type = "submit" disabled={loading} className = "w-full text-white bg-purple-600 font-semibold rounded-lg hover:bg-purple-700 transition disabled:opacity-60 py-2">
-          {loading ? "Creating a job ..." : "Create job"}
-        </button>
-      </form>
-    </div>
-  )
-
-}
+    );
+};
 
 export default CreateJob;
