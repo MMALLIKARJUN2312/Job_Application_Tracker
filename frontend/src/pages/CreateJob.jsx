@@ -3,6 +3,8 @@ import { createJob } from "../api/jobs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Input from "../components/UI/Input";
+import Button from "../components/UI/Button";
 
 const jobSchema = z.object({
     company: z.string().min(2, "Company name must be at least 2 characters"),
@@ -36,29 +38,19 @@ const CreateJob = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
                 <div>
-                    <input
+                    <Input
+                        label="Company"
                         {...register("company")}
-                        placeholder="Company"
-                        className="w-full border rounded px-4 py-2"
+                        error={errors.company?.message}
                     />
-                    {errors.company && (
-                        <p className="text-red-500 text-sm mt-1">
-                            {errors.company.message}
-                        </p>
-                    )}
                 </div>
 
                 <div>
-                    <input
+                    <Input
+                        label="Position"
                         {...register("position")}
-                        placeholder="Position"
-                        className="w-full border rounded px-4 py-2"
+                        error={errors.position?.message}
                     />
-                    {errors.position && (
-                        <p className="text-red-500 text-sm mt-1">
-                            {errors.position.message}
-                        </p>
-                    )}
                 </div>
 
                 <div>
@@ -73,13 +65,9 @@ const CreateJob = () => {
                     </select>
                 </div>
 
-                <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
-                >
+                <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting ? "Creating..." : "Create Job"}
-                </button>
+                </Button>
 
             </form>
         </div>
