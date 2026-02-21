@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, Navigate } from 'react-router';
 import { RouterProvider } from 'react-router'
 import { AuthProvider } from './context/AuthContext'
+import { JobsProvider } from './context/JobsContext';
 import ProtectedRoute from './routes/ProtectedRoute'
 import Jobs from './pages/Jobs'
 import Login from './pages/Login'
@@ -58,7 +59,9 @@ const rootContainer = document.getElementById('root');
 ReactDOM.createRoot(rootContainer).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={appRouter} />
+      <JobsProvider>
+        <RouterProvider router={appRouter} />
+      </JobsProvider>
     </AuthProvider>
   </React.StrictMode>
 )

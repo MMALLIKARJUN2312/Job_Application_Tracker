@@ -73,7 +73,7 @@ const EditJob = () => {
             {...register("company")}
             error={errors.company?.message}
           />
-        </div>
+        </div> 
 
         {/* Position */}
         <div>
