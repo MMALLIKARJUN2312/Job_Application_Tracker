@@ -4,9 +4,10 @@ import { Link } from 'react-router'
 import { deleteJob } from '../api/jobs';
 import StatsCards from "../components/StatsCards";
 import { getJobStats } from "../api/jobs";
+import { useJobs } from "../context/JobsContext";
 
 const Jobs = () => {
-    const [jobs, setJobs] = useState([]);
+    const { jobs, setJobs } = useJobs();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
