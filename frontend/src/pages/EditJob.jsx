@@ -6,6 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../components/UI/Input";
 import Button from "../components/UI/Button";
+import { useJobs } from "../context/JobsContext";
 
 // Define Validation Schema
 const jobSchema = z.object({
@@ -16,6 +17,8 @@ const jobSchema = z.object({
 
 const EditJob = () => {
   const navigate = useNavigate();
+  const { setJobs } = useJobs();
+
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -50,8 +53,17 @@ const EditJob = () => {
 
   const onSubmit = async (data) => {
     try {
-      await updateJob(id, data);
+      const updatedJob = await updateJob(id, data);
+
+      //Optimistic update
+      setJobs(prev =>
+        prev.map(job =>
+          job._id === id ? updatedJob : job
+        )
+      );
+
       navigate("/jobs");
+
     } catch {
       setError("Failed to update job");
     }
@@ -73,7 +85,7 @@ const EditJob = () => {
             {...register("company")}
             error={errors.company?.message}
           />
-        </div> 
+        </div>
 
         {/* Position */}
         <div>
