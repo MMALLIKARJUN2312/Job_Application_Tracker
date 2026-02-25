@@ -9,9 +9,11 @@ import Jobs from './pages/Jobs'
 import Login from './pages/Login'
 import CreateJob from "./pages/CreateJob";
 import EditJob from "./pages/EditJob";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from './App'
 import './index.css'
 
+const queryClient = new QueryClient();
 
 const appRouter = createBrowserRouter([
   {
@@ -58,10 +60,10 @@ const rootContainer = document.getElementById('root');
 
 ReactDOM.createRoot(rootContainer).render(
   <React.StrictMode>
-    <AuthProvider>
-      <JobsProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <RouterProvider router={appRouter} />
-      </JobsProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 )
