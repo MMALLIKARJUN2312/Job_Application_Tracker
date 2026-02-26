@@ -4,19 +4,15 @@ import { Link } from 'react-router'
 import { deleteJob } from '../api/jobs';
 import StatsCards from "../components/StatsCards";
 import { getJobStats } from "../api/jobs";
-import { useJobs } from "../context/JobsContext";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const Jobs = () => {
-    const { jobs, setJobs } = useJobs();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
+    const queryClient = useQueryClient();
     const [page, setPage] = useState(1);
     const [status, setStatus] = useState("");
     const [sort, setSort] = useState("latest")
     const [search, setSearch] = useState("")
     const [debouncedSearch, setDebouncedSearch] = useState(search);
-    const [stats, setStats] = useState(null);
 
     // Debounce search input
     useEffect(() => {
@@ -27,28 +23,29 @@ const Jobs = () => {
         return () => clearTimeout(timer);
     }, [search]);
 
-    useEffect(() => {
-        const loadJobs = async () => {
-            try {
-                setLoading(true);
-                const data = await fetchJobs({
-                    page,
-                    limit: 10,
-                    status,
-                    sort,
-                    search: debouncedSearch
-                });
-                setJobs(data.jobs || []);
-                const statsData = await getJobStats();
-                setStats(statsData);
-            } catch (error) {
-                setError("Failed to load the jobs. Please try again");
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadJobs();
-    }, [page, status, sort, debouncedSearch]);
+    const {
+        data,
+        isLoading,
+        isError
+    } = useQuery({
+        queryKey: ["jobs", page, status, sort, debouncedSearch],
+        queryFn: () =>
+            fetchJobs({
+                page,
+                limit: 10,
+                status,
+                sort,
+                search: debouncedSearch
+            }),
+        keepPreviousData: true
+    });
+
+    const jobs = data?.jobs || [];
+
+    const { data: stats } = useQuery({
+        queryKey: ["jobStats"],
+        queryFn: getJobStats
+    });
 
     const handleDelete = async (id) => {
         const confirmed = window.confirm("Are you sure you want toi delete the job?");
@@ -57,27 +54,15 @@ const Jobs = () => {
 
         try {
             await deleteJob(id);
-            setJobs((previousJobs) => previousJobs.filter((job) => job._id !== id));
+            queryClient.invalidateQueries({ queryKey: ["jobs"] });
         } catch (error) {
-            setError("Failed to delete the job. Please try again")
+            console.error("Failed to delete the job. Please try again", error);
         }
 
     }
 
-    if (loading) {
-        return (
-            <div className='text-gray-500 text-center py-10'>
-                Loading jobs ...
-            </div>
-        )
-    }
-    if (error) {
-        return (
-            <div className='text-red-500 text-center py-10'>
-                {error}
-            </div>
-        )
-    }
+    if (isLoading) return <LoadingSkeleton />;
+    if (isError) return <ErrorMessage />;
 
     if (jobs.length === 0) {
         return (
@@ -112,7 +97,7 @@ const Jobs = () => {
 
             {stats && <StatsCards stats={stats} />}
 
-            // Filters and Sorting
+            {/* Filters and Sorting */}
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mx-6 mb-6">
                 <select value={status} onChange={(event) => {
@@ -153,7 +138,7 @@ const Jobs = () => {
                 }
             </div>
 
-            // Pagination
+            {/* Pagination */}
 
             <div className='flex items-center justify-center gap-4 mt-8'>
                 <button onClick={() => setPage((previous) => Math.max(previous - 1, 1))} disabled={page === 1} className="bg-gray-200 rounded disabled:opacity-50 px-4 py-2">
