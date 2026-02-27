@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { deleteJob } from '../api/jobs';
 import StatsCards from "../components/StatsCards";
 import { getJobStats } from "../api/jobs";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Jobs = () => {
     const queryClient = useQueryClient();
@@ -47,19 +47,20 @@ const Jobs = () => {
         queryFn: getJobStats
     });
 
-    const handleDelete = async (id) => {
-        const confirmed = window.confirm("Are you sure you want toi delete the job?");
+    const deleteMutation = useMutation({
+        mutationFn: deleteJob,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["jobs"] });
+            queryClient.invalidateQueries({ queryKey: ["jobStats"] });
+        }
+    });
 
+    const handleDelete = (id) => {
+        const confirmed = window.confirm("Are you sure you want to delete the job?");
         if (!confirmed) return;
 
-        try {
-            await deleteJob(id);
-            queryClient.invalidateQueries({ queryKey: ["jobs"] });
-        } catch (error) {
-            console.error("Failed to delete the job. Please try again", error);
-        }
-
-    }
+        deleteMutation.mutate(id);
+    };
 
     if (isLoading) return <LoadingSkeleton />;
     if (isError) return <ErrorMessage />;
@@ -131,7 +132,13 @@ const Jobs = () => {
 
                             <div className="flex gap-4 mt-4">
                                 <Link to={`/jobs/${job._id}/edit`} className="text-sm text-purple-600 hover:underline">Edit</Link>
-                                <button onClick={() => handleDelete(job._id)} className="text-sm text-red-500 hover:underline">Delete</button>
+                                <button
+                                    onClick={() => handleDelete(job._id)}
+                                    disabled={deleteMutation.isPending}
+                                    className="text-sm text-red-500 hover:underline disabled:opacity-50"
+                                >
+                                    Delete
+                                </button>
                             </div>
                         </div>
                     ))
