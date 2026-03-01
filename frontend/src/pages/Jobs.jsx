@@ -49,7 +49,38 @@ const Jobs = () => {
 
     const deleteMutation = useMutation({
         mutationFn: deleteJob,
-        onSuccess: () => {
+
+        onMutate: async (id) => {
+
+            await queryClient.cancelQueries({ queryKey: ["jobs"] });
+
+            const previousJobs = queryClient.getQueryData([
+                "jobs",
+                page,
+                status,
+                sort,
+                debouncedSearch
+            ]);
+
+            queryClient.setQueryData(
+                ["jobs", page, status, sort, debouncedSearch],
+                (oldData) => ({
+                    ...oldData,
+                    jobs: oldData.jobs.filter(job => job._id !== id)
+                })
+            );
+
+            return { previousJobs };
+        },
+
+        onError: (err, id, context) => {
+            queryClient.setQueryData(
+                ["jobs", page, status, sort, debouncedSearch],
+                context.previousJobs
+            );
+        },
+
+        onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["jobs"] });
             queryClient.invalidateQueries({ queryKey: ["jobStats"] });
         }
