@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../components/UI/Input";
 import Button from "../components/UI/Button";
-import { useJobs } from "../context/JobsContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const jobSchema = z.object({
     company: z.string().min(2, "Company name must be at least 2 characters"),
@@ -15,8 +15,16 @@ const jobSchema = z.object({
 
 const CreateJob = () => {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
-    const { setJobs } = useJobs();
+    const createMutation = useMutation({
+        mutationFn: createJob,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["jobs"] });
+            queryClient.invalidateQueries({ queryKey: ["jobStats"] });
+            navigate("/jobs");
+        }
+    });
 
     const {
         register,
@@ -29,13 +37,8 @@ const CreateJob = () => {
         }
     });
 
-    const onSubmit = async (data) => {
-        const newJob = await createJob(data);
-
-        // Optimistic update
-        setJobs((prev) => [newJob, ...prev]);
-
-        navigate("/jobs");
+    const onSubmit = (data) => {
+        createMutation.mutate(data);
     };
 
     return (
@@ -72,8 +75,8 @@ const CreateJob = () => {
                     </select>
                 </div>
 
-                <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Creating..." : "Create Job"}
+                <Button type="submit" disabled={createMutation.isPending}>
+                    {createMutation.isPending ? "Creating..." : "Create Job"}
                 </Button>
 
             </form>
