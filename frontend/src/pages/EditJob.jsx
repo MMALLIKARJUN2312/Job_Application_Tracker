@@ -6,7 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../components/UI/Input";
 import Button from "../components/UI/Button";
-import { useJobs } from "../context/JobsContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Define Validation Schema
 const jobSchema = z.object({
@@ -17,11 +17,22 @@ const jobSchema = z.object({
 
 const EditJob = () => {
   const navigate = useNavigate();
-  const { setJobs } = useJobs();
 
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const queryClient = useQueryClient();
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => updateJob(id, data),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["jobStats"] });
+      navigate("/jobs");
+    }
+  });
 
   const {
     register,
@@ -51,22 +62,8 @@ const EditJob = () => {
     loadJob();
   }, [id, setValue]);
 
-  const onSubmit = async (data) => {
-    try {
-      const updatedJob = await updateJob(id, data);
-
-      //Optimistic update
-      setJobs(prev =>
-        prev.map(job =>
-          job._id === id ? updatedJob : job
-        )
-      );
-
-      navigate("/jobs");
-
-    } catch {
-      setError("Failed to update job");
-    }
+  const onSubmit = (data) => {
+    updateMutation.mutate({ id, data });
   };
 
   if (loading) return <p className="text-gray-500">Loading Job...</p>;
@@ -110,8 +107,8 @@ const EditJob = () => {
         </div>
 
         {/* Submit */}
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Updating..." : "Update Job"}
+        <Button type="submit" disabled={updateMutation.isPending}>
+          {updateMutation.isPending ? "Updating..." : "Update Job"}
         </Button>
 
       </form>
