@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../components/UI/Input";
 import Button from "../components/UI/Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const jobSchema = z.object({
     company: z.string().min(2, "Company name must be at least 2 characters"),
@@ -20,9 +21,13 @@ const CreateJob = () => {
     const createMutation = useMutation({
         mutationFn: createJob,
         onSuccess: () => {
+            toast.success("Job created successfully");
             queryClient.invalidateQueries({ queryKey: ["jobs"] });
             queryClient.invalidateQueries({ queryKey: ["jobStats"] });
             navigate("/jobs");
+        },
+        onError: () => {
+            toast.error("Failed to create job");
         }
     });
 
