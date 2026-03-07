@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../components/UI/Input";
 import Button from "../components/UI/Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 // Define Validation Schema
 const jobSchema = z.object({
@@ -26,11 +27,14 @@ const EditJob = () => {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => updateJob(id, data),
-
     onSuccess: () => {
+      toast.success("Job updated successfully");
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
       queryClient.invalidateQueries({ queryKey: ["jobStats"] });
       navigate("/jobs");
+    },
+    onError: () => {
+      toast.error("Failed to update job");
     }
   });
 
