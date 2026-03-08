@@ -5,6 +5,7 @@ import { deleteJob } from '../api/jobs';
 import StatsCards from "../components/StatsCards";
 import { getJobStats } from "../api/jobs";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const Jobs = () => {
     const queryClient = useQueryClient();
@@ -49,40 +50,13 @@ const Jobs = () => {
 
     const deleteMutation = useMutation({
         mutationFn: deleteJob,
-
-        onMutate: async (id) => {
-
-            await queryClient.cancelQueries({ queryKey: ["jobs"] });
-
-            const previousJobs = queryClient.getQueryData([
-                "jobs",
-                page,
-                status,
-                sort,
-                debouncedSearch
-            ]);
-
-            queryClient.setQueryData(
-                ["jobs", page, status, sort, debouncedSearch],
-                (oldData) => ({
-                    ...oldData,
-                    jobs: oldData.jobs.filter(job => job._id !== id)
-                })
-            );
-
-            return { previousJobs };
-        },
-
-        onError: (err, id, context) => {
-            queryClient.setQueryData(
-                ["jobs", page, status, sort, debouncedSearch],
-                context.previousJobs
-            );
-        },
-
-        onSettled: () => {
+        onSuccess: () => {
+            toast.success("Job deleted successfully");
             queryClient.invalidateQueries({ queryKey: ["jobs"] });
             queryClient.invalidateQueries({ queryKey: ["jobStats"] });
+        },
+        onError: () => {
+            toast.error("Failed to delete job");
         }
     });
 
