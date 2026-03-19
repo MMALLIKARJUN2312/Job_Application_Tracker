@@ -7,6 +7,7 @@ import { getJobStats } from "../api/jobs";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import LoadingSkeleton from "../components/LoadingSkeleton";
+import ErrorMessage from "../components/ErrorMessage";
 
 const Jobs = () => {
     const queryClient = useQueryClient();

@@ -18,4 +18,4 @@ test("renders jobs page heading", async () => {
   );
 
   expect(await screen.findByText(/Your Job Applications/i)).toBeInTheDocument();
-});
+}); 
