@@ -2,7 +2,9 @@ import { http, HttpResponse } from "msw";
 
 // Mock API endpoints
 export const handlers = [
-  http.get("http://localhost:5000/api/jobs", () => {
+  http.get("http://localhost:5000/api/jobs", async () => {
+    await new Promise((res) => setTimeout(res, 500)); // simulate delay
+
     return HttpResponse.json({
       jobs: [
         {

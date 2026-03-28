@@ -1,14 +1,35 @@
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { test, expect } from "vitest";
-import Jobs from "../Jobs";
 import { MemoryRouter } from "react-router";
+import Jobs from "../Jobs";
 
 const createTestClient = () =>
   new QueryClient({
-    defaultOptions: { queries: { retry: false } }
+    defaultOptions: {
+      queries: {
+        retry: false,
+        staleTime: 0,
+      },
+    },
   });
 
+/*TEST 1 — Loading State*/
+test("shows loading state initially", async () => {
+  const client = createTestClient();
+
+  render(
+    <QueryClientProvider client={client}>
+      <MemoryRouter>
+        <Jobs />
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
+
+  expect(await screen.findByText(/loading/i)).toBeInTheDocument();
+});
+
+/*TEST 2 — Success State*/
 test("renders jobs page heading", async () => {
   const client = createTestClient();
 
