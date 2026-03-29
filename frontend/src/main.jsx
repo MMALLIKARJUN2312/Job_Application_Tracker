@@ -10,7 +10,7 @@ import CreateJob from "./pages/CreateJob";
 import EditJob from "./pages/EditJob";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
-import { ErrorBoundary } from "react-error-boundary";
+import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 import ErrorBoundary from "./components/ErrorBoundary";
 import App from './App'
 import './index.css'
@@ -62,13 +62,13 @@ const rootContainer = document.getElementById('root');
 
 ReactDOM.createRoot(rootContainer).render(
   <React.StrictMode>
-    <ErrorBoundary FallbackComponent={ErrorBoundary}>
+    <ReactErrorBoundary FallbackComponent={ErrorBoundary}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <RouterProvider router={appRouter} />
           <Toaster position="top-right" reverseOrder={false} />
         </AuthProvider>
       </QueryClientProvider>
-    </ErrorBoundary>
+    </ReactErrorBoundary>
   </React.StrictMode>
 )
