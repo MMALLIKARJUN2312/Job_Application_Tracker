@@ -30,7 +30,7 @@ test("shows loading state initially", async () => {
 });
 
 /*TEST 2 — Success State*/
-test("renders jobs page heading", async () => {
+test("renders job data correctly", async () => {
   const client = createTestClient();
 
   render(
@@ -41,5 +41,6 @@ test("renders jobs page heading", async () => {
     </QueryClientProvider>
   );
 
-  expect(await screen.findByText(/Your Job Applications/i)).toBeInTheDocument();
+  expect(await screen.findByText("Google")).toBeInTheDocument();
+  expect(screen.getByText("SWE")).toBeInTheDocument();
 });
