@@ -4,6 +4,7 @@ import { test, expect } from "vitest";
 import { MemoryRouter } from "react-router";
 import { server } from "../../test/mocks/server";
 import { http, HttpResponse } from "msw";
+import userEvent from "@testing-library/user-event";
 import Jobs from "../Jobs";
 
 const createTestClient = () =>
@@ -66,4 +67,21 @@ test("shows error message on API failure", async () => {
   );
 
   expect(await screen.findByText(/failed/i)).toBeInTheDocument();
+});
+
+/*TEST 3 —  Delete Job*/
+test("deletes a job successfully", async () => {
+  const client = createTestClient();
+
+  render(
+    <QueryClientProvider client={client}>
+      <MemoryRouter>
+        <Jobs />
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
+
+  const deleteButton = await screen.findByText(/delete/i);
+
+  await userEvent.click(deleteButton);
 });
