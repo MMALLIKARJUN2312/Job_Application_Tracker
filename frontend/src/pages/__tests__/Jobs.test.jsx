@@ -85,3 +85,22 @@ test("deletes a job successfully", async () => {
 
   await userEvent.click(deleteButton);
 });
+
+/*TEST 4 —  Search Job*/
+test("filters jobs based on search input", async () => {
+  const client = createTestClient();
+
+  render(
+    <QueryClientProvider client={client}>
+      <MemoryRouter>
+        <Jobs />
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
+
+  const input = screen.getByPlaceholderText(/search/i);
+
+  await userEvent.type(input, "Google");
+
+  expect(await screen.findByText("Google")).toBeInTheDocument();
+});
