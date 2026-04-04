@@ -74,10 +74,22 @@ const Jobs = () => {
 
     if (jobs.length === 0) {
         return (
-            <div className="text-gray-500 text-center py-10">
-                No Jobs found.
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+                <h3 className="text-xl font-semibold mb-2">
+                    No jobs yet 🚀
+                </h3>
+                <p className="text-gray-500 mb-4">
+                    Start tracking your job applications now
+                </p>
+
+                <Link
+                    to="/jobs/new"
+                    className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                >
+                    Add First Job
+                </Link>
             </div>
-        )
+        );
     }
 
     return (
