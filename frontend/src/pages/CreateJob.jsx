@@ -20,13 +20,23 @@ const CreateJob = () => {
 
     const createMutation = useMutation({
         mutationFn: createJob,
+
+        onMutate: () => {
+            toast.loading("Creating job...");
+        },
+
         onSuccess: () => {
+            toast.dismiss();
             toast.success("Job created successfully");
+
             queryClient.invalidateQueries({ queryKey: ["jobs"] });
             queryClient.invalidateQueries({ queryKey: ["jobStats"] });
+
             navigate("/jobs");
         },
+
         onError: () => {
+            toast.dismiss();
             toast.error("Failed to create job");
         }
     });
@@ -34,7 +44,7 @@ const CreateJob = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting }
+        formState: { errors }
     } = useForm({
         resolver: zodResolver(jobSchema),
         defaultValues: {

@@ -4,13 +4,12 @@ import { Link } from 'react-router'
 import { deleteJob } from '../api/jobs';
 import StatsCards from "../components/StatsCards";
 import { getJobStats } from "../api/jobs";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation} from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import ErrorMessage from "../components/ErrorMessage";
 
 const Jobs = () => {
-    const queryClient = useQueryClient();
     const [page, setPage] = useState(1);
     const [status, setStatus] = useState("");
     const [sort, setSort] = useState("latest")
@@ -52,13 +51,16 @@ const Jobs = () => {
 
     const deleteMutation = useMutation({
         mutationFn: deleteJob,
+        onMutate: () => {
+            toast.loading("Deleting job...");
+        },
         onSuccess: () => {
-            toast.success("Job deleted successfully");
-            queryClient.invalidateQueries({ queryKey: ["jobs"] });
-            queryClient.invalidateQueries({ queryKey: ["jobStats"] });
+            toast.dismiss();
+            toast.success("Job deleted");
         },
         onError: () => {
-            toast.error("Failed to delete job");
+            toast.dismiss();
+            toast.error("Delete failed");
         }
     });
 

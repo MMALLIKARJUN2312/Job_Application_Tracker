@@ -27,13 +27,23 @@ const EditJob = () => {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => updateJob(id, data),
+
+    onMutate: () => {
+      toast.loading("Updating job...");
+    },
+
     onSuccess: () => {
+      toast.dismiss();
       toast.success("Job updated successfully");
+
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
       queryClient.invalidateQueries({ queryKey: ["jobStats"] });
+
       navigate("/jobs");
     },
+
     onError: () => {
+      toast.dismiss();
       toast.error("Failed to update job");
     }
   });
@@ -42,7 +52,7 @@ const EditJob = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(jobSchema),
   });
