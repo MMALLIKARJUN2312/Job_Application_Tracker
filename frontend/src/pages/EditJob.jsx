@@ -92,6 +92,8 @@ const EditJob = () => {
         {/* Company */}
         <div>
           <Input
+            aria-label="Company"
+            placeholder="Enter the company"
             label="Company"
             {...register("company")}
             error={errors.company?.message}
@@ -101,6 +103,8 @@ const EditJob = () => {
         {/* Position */}
         <div>
           <Input
+            aria-label="Position"
+            placeholder="Enter the position"
             label="Position"
             {...register("position")}
             error={errors.position?.message}
@@ -110,6 +114,8 @@ const EditJob = () => {
         {/* Status */}
         <div>
           <select
+            aria-label="Status"
+            placeholder="Enter the status"
             {...register("status")}
             className="w-full border rounded px-4 py-2"
           >

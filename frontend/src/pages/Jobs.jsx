@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { deleteJob } from '../api/jobs';
 import StatsCards from "../components/StatsCards";
 import { getJobStats } from "../api/jobs";
-import { useQuery, useMutation} from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import ErrorMessage from "../components/ErrorMessage";
@@ -107,6 +107,7 @@ const Jobs = () => {
             </div>
 
             <input
+                aria-label="Company or Position"
                 type="text"
                 placeholder="Search by company or position..."
                 value={search}
