@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { fetchJobs } from '../api/getJobs';
 import { Link } from 'react-router'
 import { deleteJob } from '../api/jobs';
@@ -6,6 +6,7 @@ import StatsCards from "../components/StatsCards";
 import { getJobStats } from "../api/jobs";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import JobCard from '../components/JobsCard';
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import ErrorMessage from "../components/ErrorMessage";
 
@@ -42,7 +43,9 @@ const Jobs = () => {
         keepPreviousData: true
     });
 
-    const jobs = data?.jobs || [];
+    const jobs = useMemo(() => {
+        return data?.jobs || [];
+    }, [data]);
 
     const { data: stats } = useQuery({
         queryKey: ["jobStats"],
@@ -147,22 +150,7 @@ const Jobs = () => {
             <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 m-6'>
                 {
                     jobs.map((job) => (
-                        <div key={job._id} className="bg-white rounded-lg border shadow-sm hover:shadow-md transition p-5">
-                            <h3 className='text-lg font-bold'>{job.company}</h3>
-                            <p className="font-semibold mt-1">{job.position}</p>
-                            <span className="inline-block text-xs capitalize font-medium rounded-full bg-purple-600 text-white px-3 py-2 mt-4">{job.status}</span>
-
-                            <div className="flex gap-4 mt-4">
-                                <Link to={`/jobs/${job._id}/edit`} className="text-sm text-purple-600 hover:underline">Edit</Link>
-                                <button
-                                    onClick={() => handleDelete(job._id)}
-                                    disabled={deleteMutation.isPending}
-                                    className="text-sm text-red-500 hover:underline disabled:opacity-50"
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
+                        <JobCard key={job._id} job={job} onDelete={handleDelete} />
                     ))
                 }
             </div>
