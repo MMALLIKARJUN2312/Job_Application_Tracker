@@ -1,11 +1,9 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
 // Create Context 
-
 const JobsContext = createContext(null);
 
-// Provider Component 
-
+// Provider Component
 export const JobsProvider = ({ children }) => {
   const [jobs, setJobs] = useState([]);
 
@@ -16,14 +14,3 @@ export const JobsProvider = ({ children }) => {
   );
 };
 
-// Custom Hook
-
-export const useJobs = () => {
-  const context = useContext(JobsContext);
-
-  if (!context) {
-    throw new Error("useJobs must be used inside JobsProvider");
-  }
-
-  return context;
-};

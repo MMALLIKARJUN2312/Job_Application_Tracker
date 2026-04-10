@@ -16,13 +16,10 @@ const LoadingSkeleton = ({ count = 6 }) => {
           >
             {/* Company */}
             <Skeleton height={20} width="60%" />
-
             {/* Position */}
             <Skeleton height={15} width="40%" className="mt-2" />
-
             {/* Status badge */}
             <Skeleton height={25} width="30%" className="mt-4 rounded-full" />
-
             {/* Buttons */}
             <div className="flex gap-4 mt-4">
               <Skeleton height={15} width={40} />
