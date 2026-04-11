@@ -20,7 +20,7 @@ const Login = () => {
             await login(email, password);
             navigate("/jobs", { replace: true });
         } catch (error) {
-            setError("Login Failed. Please check your credentials");
+            setError("Login Failed. Please check your credentials", error.message);
         } finally {
             setLoading(false);
         }
