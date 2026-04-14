@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router'
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth.jsx';
 
 const Login = () => {
     const { login } = useAuth();

@@ -2,7 +2,7 @@ import { createContext, useState} from 'react';
 import apiInstance from '../api/axios.js'
 
 // Creating a Context
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
 // AuthProvider wraps the entire app and provides the auth state
 export const AuthProvider = ({ children }) => {
