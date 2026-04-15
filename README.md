@@ -35,6 +35,8 @@ Built with clean architecture, scalable folder structure, and professional Git p
     - [Backend Setup](#backend-setup)
     - [Frontend Setup](#frontend-setup)
   - [Running the Application](#running-the-application)
+    - [Local Development](#local-development)
+    - [Live Deployment](#live-deployment)
   - [Git Workflow \& Commit Convention](#git-workflow--commit-convention)
   - [Future Enhancements](#future-enhancements)
   - [Learning Outcomes](#learning-outcomes)
@@ -270,10 +272,21 @@ http://localhost:5173
 
 ## Running the Application
 
+### Local Development
+
 | Service  | URL                   |
 | -------- | --------------------- |
-| Frontend | <http://localhost:5173> |
-| Backend  | <http://localhost:5000> |
+| Frontend | http://localhost:5173 |
+| Backend  | http://localhost:5000 |
+
+---
+
+### Live Deployment
+
+| Service  | URL                                                                                   |
+| -------- | --------------------------------------------------------------------------------------|
+| Frontend | [https://your-app.vercel.app](https://job-application-tracker-82ka.vercel.app/)       |
+| Backend  | [https://your-backend.onrender.com](https://job-application-tracker-vt7i.onrender.com)|
 
 ---
 
