@@ -8,18 +8,15 @@ const apiInstance = axios.create({
   timeout: 10000,
 });
 
-apiInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
+apiInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+  if (token && token !== "undefined" && token !== "null") {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+  return config;
+});;
 
 // Global Error Handling
 apiInstance.interceptors.response.use(
