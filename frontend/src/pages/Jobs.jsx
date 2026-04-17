@@ -41,7 +41,7 @@ const Jobs = () => {
                 search: debouncedSearch
             }),
         keepPreviousData: true,
-        enabled: !!localStorage.getItem("token"), 
+        enabled: !!localStorage.getItem("token"),
     });
 
     const jobs = useMemo(() => {
@@ -51,7 +51,8 @@ const Jobs = () => {
     const { data: stats } = useQuery({
         queryKey: ["jobStats"],
         queryFn: getJobStats,
-        enabled: !!localStorage.getItem("token"),
+        staleTime: 0,
+        refetchOnWindowFocus: true,
     });
 
     const deleteMutation = useMutation({
