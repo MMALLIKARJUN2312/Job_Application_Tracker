@@ -1,6 +1,7 @@
 import Job from "../models/Job.js";
 import AppError from "../utils/errorHandler.js";
 import asyncWrapper from "../utils/asyncHandler.js";
+import mongoose from "mongoose";
 
 export const createJob = asyncWrapper(async (req, res) => {
   const { company, position, status } = req.body;
@@ -112,7 +113,7 @@ export const deleteJob = asyncWrapper(async (req, res) => {
 export const getJobStats = asyncWrapper(async (req, res) => {
   const stats = await Job.aggregate([
     {
-      $match: { createdBy: req.userId },
+      $match: { createdBy: new mongoose.Types.ObjectId(req.userId) },
     },
     {
       $group: {
