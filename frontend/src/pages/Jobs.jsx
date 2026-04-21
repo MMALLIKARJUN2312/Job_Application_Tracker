@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import JobCard from "../components/JobsCard";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import ErrorMessage from "../components/ErrorMessage";
+import JobsChart from "../components/JobsChart";
 
 const Jobs = () => {
   const queryClient = useQueryClient();
@@ -147,6 +148,9 @@ const Jobs = () => {
 
       {/* Stats */}
       {stats && <StatsCards stats={stats} />}
+
+      {/* Jobs Charts */}
+      {stats && <JobsChart stats={stats} />}
 
       {/* Empty State */}
       {jobs.length === 0 ? (
