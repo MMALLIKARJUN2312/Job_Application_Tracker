@@ -84,10 +84,10 @@ const Jobs = () => {
   if (isError) return <ErrorMessage />;
 
   return (
-    <div className="max-w-8xl mx-auto px-6 py-8 space-y-8">
+    <div className="max-w-8xl mx-auto px-6 py-8 space-y-8 bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-bold text-gray-800">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
           Your Job Applications
         </h2>
 
@@ -155,7 +155,7 @@ const Jobs = () => {
       {/* Empty State */}
       {jobs.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <h3 className="text-xl font-semibold mb-2">No jobs yet 🚀</h3>
+          <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">No jobs yet 🚀</h3>
           <p className="text-gray-500 mb-4">
             Start tracking your job applications
           </p>

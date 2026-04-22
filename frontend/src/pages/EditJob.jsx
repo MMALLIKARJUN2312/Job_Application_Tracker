@@ -84,8 +84,8 @@ const EditJob = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-sm">
-      <h2 className="text-2xl font-semibold mb-6">Edit Job</h2>
+    <div className="max-w-xl mx-auto p-8 rounded-lg shadow-sm bg-gray-50 dark:bg-gray-900">
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Edit Job</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 

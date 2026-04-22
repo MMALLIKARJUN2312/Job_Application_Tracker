@@ -2,7 +2,7 @@ import React from "react";
 
 const JobCard = React.memo(({ job, onDelete }) => {
   return (
-    <div className="bg-white rounded-lg border shadow-sm hover:shadow-md transition p-5">
+    <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-lg border shadow-sm hover:shadow-md transition p-5">
       <h3 className="text-lg font-bold">{job.company}</h3>
       <p className="font-semibold mt-1">{job.position}</p>
 
