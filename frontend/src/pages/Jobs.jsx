@@ -9,6 +9,7 @@ import JobCard from "../components/JobsCard";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import ErrorMessage from "../components/ErrorMessage";
 import JobsChart from "../components/JobsChart";
+import AdvancedCharts from "../components/AdvancedCharts";
 
 const Jobs = () => {
   const queryClient = useQueryClient();
@@ -148,6 +149,16 @@ const Jobs = () => {
 
       {/* Stats */}
       {stats && <StatsCards stats={stats} />}
+
+      {stats && jobs.length > 0 && (
+        <div className="mt-12">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+            Analytics Dashboard
+          </h2>
+
+          <AdvancedCharts stats={stats} jobs={jobs} />
+        </div>
+      )}
 
       {/* Jobs Charts */}
       {stats && <JobsChart stats={stats} />}
