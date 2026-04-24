@@ -10,6 +10,8 @@ import LoadingSkeleton from "../components/LoadingSkeleton";
 import ErrorMessage from "../components/ErrorMessage";
 import JobsChart from "../components/JobsChart";
 import AdvancedCharts from "../components/AdvancedCharts";
+import NotificationsPanel from "../components/NotificationsPanel";
+import { generateNotifications } from "../utils/notifications.js";
 
 const Jobs = () => {
   const queryClient = useQueryClient();
@@ -44,6 +46,19 @@ const Jobs = () => {
   });
 
   const jobs = useMemo(() => data?.jobs || [], [data]);
+  const notifications = generateNotifications(jobs);
+
+  useEffect(() => {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+  }, []);
+
+  useEffect(() => {
+    notifications.forEach((n) => {
+      new Notification(n.message);
+    });
+  }, [notifications]);
 
   // Stats Query
   const { data: stats } = useQuery({
@@ -146,6 +161,8 @@ const Jobs = () => {
           </select>
         </div>
       </div>
+
+      <NotificationsPanel notifications={notifications} />
 
       {/* Stats */}
       {stats && <StatsCards stats={stats} />}
