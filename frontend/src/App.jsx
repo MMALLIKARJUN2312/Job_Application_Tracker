@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from 'react-router'
 import { useAuth } from './hooks/useAuth.jsx';
-import ToggleTheme from "../components/ToggleTheme";
+import ToggleTheme from "./components/ToggleTheme.jsx";
 
 const App = () => {
 

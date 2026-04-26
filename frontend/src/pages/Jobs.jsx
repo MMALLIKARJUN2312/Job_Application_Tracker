@@ -12,6 +12,7 @@ import JobsChart from "../components/JobsChart";
 import AdvancedCharts from "../components/AdvancedCharts";
 import NotificationsPanel from "../components/NotificationsPanel";
 import { generateNotifications } from "../utils/notifications.js";
+import { exportJobsToCSV } from "../utils/exportJobs";
 
 const Jobs = () => {
   const queryClient = useQueryClient();
@@ -107,12 +108,20 @@ const Jobs = () => {
           Your Job Applications
         </h2>
 
-        <Link
-          to="/jobs/new"
-          className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow hover:opacity-90 transition"
-        >
-          + Add Job
-        </Link>
+        <div className="flex gap-3">
+          <Link
+            to="/jobs/new"
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow hover:opacity-90 transition"
+          >
+            + Add Job
+          </Link>
+          <button
+            onClick={() => exportJobsToCSV(jobs)}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+          >
+            Export CSV
+          </button>
+        </div>
       </div>
 
       {/* Search + Filters */}
