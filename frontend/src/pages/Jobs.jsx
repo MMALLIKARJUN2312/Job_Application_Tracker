@@ -13,6 +13,7 @@ import AdvancedCharts from "../components/AdvancedCharts";
 import NotificationsPanel from "../components/NotificationsPanel";
 import { generateNotifications } from "../utils/notifications.js";
 import { exportJobsToCSV } from "../utils/exportJobs";
+import { exportJobsToPDF } from "../utils/exportPDF.js";
 
 const Jobs = () => {
   const queryClient = useQueryClient();
@@ -101,7 +102,7 @@ const Jobs = () => {
   if (isError) return <ErrorMessage />;
 
   return (
-    <div className="max-w-8xl mx-auto px-6 py-8 space-y-8 bg-gray-50 dark:bg-gray-900">
+    <div className="max-w-8xl mx-auto px-6 py-8 space-y-8 bg-gray-50 dark:bg-gray-900" id="jobs-dashboard">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -111,15 +112,23 @@ const Jobs = () => {
         <div className="flex gap-3">
           <Link
             to="/jobs/new"
-            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow hover:opacity-90 transition"
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow"
           >
             + Add Job
           </Link>
+
           <button
             onClick={() => exportJobsToCSV(jobs)}
             className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
           >
             Export CSV
+          </button>
+
+          <button
+            onClick={exportJobsToPDF}
+            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+          >
+            Export PDF
           </button>
         </div>
       </div>
