@@ -11,7 +11,7 @@ const NotificationsPanel = ({ notifications }) => {
         {notifications.map((n) => (
           <div
             key={n.id}
-            className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-sm"
+            className="p-3 rounded-lg text-sm bg-gray-100 dark:bg-gray-800 border dark:border-gray-700"
           >
             {n.message}
           </div>

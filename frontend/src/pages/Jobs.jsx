@@ -144,7 +144,7 @@ const Jobs = () => {
             setPage(1);
             setSearch(e.target.value);
           }}
-          className="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full lg:w-80 shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
+          className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-4 py-2 text-sm w-full lg:w-80 shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
         />
 
         {/* Filters */}
@@ -155,7 +155,7 @@ const Jobs = () => {
               setPage(1);
               setStatus(e.target.value);
             }}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm shadow-sm"
+            className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm shadow-sm"
           >
             <option value="">All Status</option>
             <option value="applied">Applied</option>
@@ -233,12 +233,12 @@ const Jobs = () => {
                 setPage((prev) => Math.max(prev - 1, 1))
               }
               disabled={page === 1}
-              className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-300 transition"
+              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
             >
               Previous
             </button>
 
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Page {page}
             </span>
 

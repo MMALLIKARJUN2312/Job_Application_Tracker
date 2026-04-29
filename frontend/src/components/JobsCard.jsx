@@ -2,11 +2,11 @@ import React from "react";
 
 const JobCard = React.memo(({ job, onDelete }) => {
   return (
-    <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-lg border shadow-sm hover:shadow-md transition p-5">
-      <h3 className="text-lg font-bold">{job.company}</h3>
-      <p className="font-semibold mt-1">{job.position}</p>
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-lg transition p-5"> 
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white">{job.company}</h3>
+      <p className="font-semibold mt-1 text-gray-600 dark:text-gray-300">{job.position}</p>
 
-      <span className="inline-block text-xs capitalize font-medium rounded-full bg-purple-600 text-white px-3 py-2 mt-4">
+      <span className="inline-block text-xs capitalize font-medium rounded-full bg-purple-600/90 dark:bg-purple-500 text-white px-3 py-1.5 mt-4">
         {job.status}
       </span>
 

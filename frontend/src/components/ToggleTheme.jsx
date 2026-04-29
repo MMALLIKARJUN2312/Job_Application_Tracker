@@ -6,7 +6,7 @@ const ToggleTheme = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-sm"
+      className="px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-sm"
     >
       {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
     </button>
