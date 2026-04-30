@@ -15,7 +15,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <header className="bg-white dark:bg-gray-800 shadow-sm">
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4 m-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-center px-6 py-4 m-4">
 
           <h1 className="text-3xl font-extrabold text-purple-600 dark:text-purple-400">
             Job Application Tracker
