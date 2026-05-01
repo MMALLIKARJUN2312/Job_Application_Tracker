@@ -14,6 +14,7 @@ import NotificationsPanel from "../components/NotificationsPanel";
 import { generateNotifications } from "../utils/notifications.js";
 import { exportJobsToCSV } from "../utils/exportJobs";
 import { exportJobsToPDF } from "../utils/exportPDF.js";
+import InsightsPanel from "../components/InsightsPanel";
 
 const Jobs = () => {
   const queryClient = useQueryClient();
@@ -184,6 +185,9 @@ const Jobs = () => {
 
       {/* Stats */}
       {stats && <StatsCards stats={stats} />}
+
+      {/* Insights */}
+      {stats && <InsightsPanel stats={stats} />}
 
       {stats && jobs.length > 0 && (
         <div className="mt-12">
