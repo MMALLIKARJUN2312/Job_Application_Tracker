@@ -1,4 +1,5 @@
 import React from "react";
+import StatusTimeline from "./StatusTimeline";
 
 const JobCard = React.memo(({ job, onDelete }) => {
   return (
@@ -9,6 +10,7 @@ const JobCard = React.memo(({ job, onDelete }) => {
       <span className="inline-block text-xs capitalize font-medium rounded-full bg-purple-600/90 dark:bg-purple-500 text-white px-3 py-1.5 mt-4">
         {job.status}
       </span>
+      <StatusTimeline status={job.status} />
 
       <div className="flex gap-4 mt-4">
         <a href={`/jobs/${job._id}/edit`} className="text-sm text-purple-600 hover:underline">
