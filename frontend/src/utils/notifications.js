@@ -9,8 +9,8 @@ export const generateNotifications = (jobs) => {
       (now - created) / (1000 * 60 * 60 * 24)
     );
 
-    // 🔹 Follow-up reminder
-    if (job.status === "applied" && diffDays >= 3) {
+    // Follow-up reminder
+    if (job.status === "applied" && diffDays > 7) {
       notifications.push({
         id: job._id,
         message: `Follow up with ${job.company} (${diffDays} days ago)`,
@@ -18,7 +18,7 @@ export const generateNotifications = (jobs) => {
       });
     }
 
-    // 🔹 Stale application
+    // Stale application
     if (diffDays >= 7) {
       notifications.push({
         id: job._id + "-stale",
@@ -27,7 +27,7 @@ export const generateNotifications = (jobs) => {
       });
     }
 
-    // 🔹 Interview alert
+    // Interview alert
     if (job.status === "interview") {
       notifications.push({
         id: job._id + "-interview",
