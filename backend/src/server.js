@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import jobRoutes from './routes/jobRoutes.js'
 import errorHandler from './middlewares/errorMiddleware.js'
+import resumeRoutes from "./routes/resumeRoutes.js";
 
 // Load environment variables
 dotenv.config()
@@ -21,6 +22,7 @@ app.use(cors());
 app.use('/api/auth',authRoutes);
 app.use('/api/user', userRoutes)
 app.use('/api/jobs', jobRoutes);
+app.use("/api/resume", resumeRoutes);
 
 app.use(errorHandler);
 
