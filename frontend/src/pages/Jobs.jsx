@@ -15,6 +15,7 @@ import { generateNotifications } from "../utils/notifications.js";
 import { exportJobsToCSV } from "../utils/exportJobs";
 import { exportJobsToPDF } from "../utils/exportPDF.js";
 import InsightsPanel from "../components/InsightsPanel";
+import ResumeUpload from "../components/ResumeUpload.jsx";
 
 const Jobs = () => {
   const queryClient = useQueryClient();
@@ -131,6 +132,8 @@ const Jobs = () => {
           >
             Export PDF
           </button>
+
+          <ResumeUpload />
         </div>
       </div>
 
