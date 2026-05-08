@@ -107,7 +107,7 @@ const Jobs = () => {
     <div className="max-w-8xl mx-auto px-6 py-8 space-y-8 bg-gray-50 dark:bg-gray-900" id="jobs-dashboard">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
           Your Job Applications
         </h2>
 
