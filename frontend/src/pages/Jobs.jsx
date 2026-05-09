@@ -114,7 +114,7 @@ const Jobs = () => {
         <div className="flex gap-3">
           <Link
             to="/jobs/new"
-            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow"
+            className="inline-flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium shadow hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
             + Add Job
           </Link>
@@ -240,7 +240,7 @@ const Jobs = () => {
                 setPage((prev) => Math.max(prev - 1, 1))
               }
               disabled={page === 1}
-              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+              className="px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-white hover:shadow-md transition"
             >
               Previous
             </button>
@@ -251,7 +251,7 @@ const Jobs = () => {
 
             <button
               onClick={() => setPage((prev) => prev + 1)}
-              className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+              className="px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-white hover:shadow-md transition"
             >
               Next
             </button>
