@@ -148,9 +148,8 @@ const Jobs = () => {
             setPage(1);
             setSearch(e.target.value);
           }}
-          className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-4 py-2 text-sm w-full lg:w-80 shadow-sm focus:ring-2 focus:ring-purple-500 outline-none"
+          className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm w-full lg:w-80 shadow-sm focus:ring-2 focus:ring-purple-500 outline-none transition"
         />
-
         {/* Filters */}
         <div className="flex gap-4">
           <select
@@ -159,7 +158,7 @@ const Jobs = () => {
               setPage(1);
               setStatus(e.target.value);
             }}
-            className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm shadow-sm"
+            className="text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-purple-500 outline-none transition"
           >
             <option value="">All Status</option>
             <option value="applied">Applied</option>
@@ -174,7 +173,7 @@ const Jobs = () => {
               setPage(1);
               setSort(e.target.value);
             }}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm shadow-sm"
+            className="text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-purple-500 outline-none transition"
           >
             <option value="latest">Latest</option>
             <option value="oldest">Oldest</option>
