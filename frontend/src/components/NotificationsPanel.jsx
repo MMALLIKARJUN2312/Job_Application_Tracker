@@ -2,7 +2,7 @@ const NotificationsPanel = ({ notifications }) => {
   if (!notifications.length) return null;
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
+    <div className="backdrop-blur-lg bg-white/80 dark:bg-gray-800/70 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
       <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
         Notifications
       </h3>
