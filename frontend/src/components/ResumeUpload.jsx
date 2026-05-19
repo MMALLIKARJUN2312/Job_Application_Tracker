@@ -28,7 +28,7 @@ const ResumeUpload = () => {
 
       toast.success("Resume parsed successfully");
     } catch (error) {
-      toast.error("Failed to upload resume");
+      toast.error("Failed to upload resume", error);
     } finally {
       setLoading(false);
     }
