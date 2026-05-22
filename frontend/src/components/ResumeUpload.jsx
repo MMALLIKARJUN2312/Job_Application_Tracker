@@ -1,10 +1,12 @@
 import { useState } from "react";
 import apiInstance from "../api/axios";
 import toast from "react-hot-toast";
+import MatchScorePanel from "./MatchScorePanel";
 
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
   const [skills, setSkills] = useState([]);
+  const [matchedJobs, setMatchedJobs] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleUpload = async () => {
@@ -24,7 +26,21 @@ const ResumeUpload = () => {
         formData
       );
 
-      setSkills(response.data.matchedSkills);
+      const extractedSkills = response.data.matchedSkills;
+
+      setSkills(extractedSkills);
+
+      const jobsResponse = await apiInstance.get("/jobs");
+
+      const matchResponse = await apiInstance.post(
+        "/resume/match-score",
+        {
+          skills: extractedSkills,
+          jobs: jobsResponse.data.jobs,
+        }
+      );
+
+      setMatchedJobs(matchResponse.data);
 
       toast.success("Resume parsed successfully");
     } catch (error) {
@@ -36,13 +52,13 @@ const ResumeUpload = () => {
 
   return (
     <div className="backdrop-blur-lg bg-white/80 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-6">
-      
+
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
         Resume Skill Matching
       </h2>
 
       <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
-        
+
         <input
           type="file"
           accept=".pdf"
@@ -61,10 +77,16 @@ const ResumeUpload = () => {
 
       {skills.length > 0 && (
         <div className="mt-6">
-          
+
           <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
             Matched Skills
           </h3>
+
+          {matchedJobs.length > 0 && (
+            <div className="mt-8">
+              <MatchScorePanel jobs={matchedJobs} />
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-3">
             {skills.map((skill) => (
