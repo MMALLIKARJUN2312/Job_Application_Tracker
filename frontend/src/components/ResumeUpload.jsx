@@ -2,11 +2,13 @@ import { useState } from "react";
 import apiInstance from "../api/axios";
 import toast from "react-hot-toast";
 import MatchScorePanel from "./MatchScorePanel";
+import { generateSuggestions } from "../utils/resumeSuggestions";
 
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
   const [skills, setSkills] = useState([]);
   const [matchedJobs, setMatchedJobs] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleUpload = async () => {
@@ -29,6 +31,7 @@ const ResumeUpload = () => {
       const extractedSkills = response.data.matchedSkills;
 
       setSkills(extractedSkills);
+      setSuggestions(generateSuggestions(extractedSkills));
 
       const jobsResponse = await apiInstance.get("/jobs");
 
@@ -96,6 +99,26 @@ const ResumeUpload = () => {
               >
                 {skill}
               </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {suggestions.length > 0 && (
+        <div className="mt-6">
+
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+            AI Suggestions
+          </h3>
+
+          <div className="space-y-3">
+            {suggestions.map((s, index) => (
+              <div
+                key={index}
+                className="p-3 rounded-xl bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 text-sm text-yellow-800 dark:text-yellow-300"
+              >
+                ⚠ {s}
+              </div>
             ))}
           </div>
         </div>
