@@ -1,5 +1,6 @@
 import fs from "fs";
 import pdf from "pdf-parse";
+import { analyzeResumeWithAI } from "../services/geminiService.js";
 
 export const parseResume = async (req, res) => {
   try {
@@ -35,9 +36,14 @@ export const parseResume = async (req, res) => {
       resumeText.includes(skill)
     );
 
+    const aiAnalysis = await analyzeResumeWithAI(
+      resumeText
+    );
+
     return res.status(200).json({
       matchedSkills,
       extractedText: resumeText,
+      aiAnalysis,
     });
   } catch (error) {
     console.error("Resume Parsing Error:", error);
