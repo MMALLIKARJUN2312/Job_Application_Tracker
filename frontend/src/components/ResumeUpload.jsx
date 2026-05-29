@@ -3,12 +3,14 @@ import apiInstance from "../api/axios";
 import toast from "react-hot-toast";
 import MatchScorePanel from "./MatchScorePanel";
 import { generateSuggestions } from "../utils/resumeSuggestions";
+import AIInsightsPanel from "./AIInsightsPanel";
 
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
   const [skills, setSkills] = useState([]);
   const [matchedJobs, setMatchedJobs] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const [aiAnalysis, setAiAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleUpload = async () => {
@@ -31,6 +33,7 @@ const ResumeUpload = () => {
       const extractedSkills = response.data.matchedSkills;
 
       setSkills(extractedSkills);
+      setAiAnalysis(response.data.aiAnalysis);
       setSuggestions(generateSuggestions(extractedSkills));
 
       const jobsResponse = await apiInstance.get("/jobs");
@@ -88,6 +91,12 @@ const ResumeUpload = () => {
           {matchedJobs.length > 0 && (
             <div className="mt-8">
               <MatchScorePanel jobs={matchedJobs} />
+            </div>
+          )}
+
+          {aiAnalysis && (
+            <div className="mt-8">
+              <AIInsightsPanel analysis={aiAnalysis} />
             </div>
           )}
 
