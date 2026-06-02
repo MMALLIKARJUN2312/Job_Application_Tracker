@@ -1,8 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(
-  process.env.GEMINI_API_KEY
-);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-2.5-flash",
@@ -38,4 +36,19 @@ Respond ONLY in JSON format:
   const response = result.response.text();
 
   return JSON.parse(response.replace(/```json|```/g, "").trim());
+};
+
+export const askCareerAssistant = async (question) => {
+  const prompt = `
+You are an expert AI Career Coach.
+
+Answer professionally and concisely.
+
+Question:
+${question}
+`;
+
+  const result = await model.generateContent(prompt);
+
+  return result.response.text();
 };
