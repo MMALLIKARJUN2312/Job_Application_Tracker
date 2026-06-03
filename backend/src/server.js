@@ -7,6 +7,7 @@ import userRoutes from './routes/userRoutes.js'
 import jobRoutes from './routes/jobRoutes.js'
 import errorHandler from './middlewares/errorMiddleware.js'
 import resumeRoutes from "./routes/resumeRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 
 // Load environment variables
 dotenv.config()
@@ -23,6 +24,7 @@ app.use('/api/auth',authRoutes);
 app.use('/api/user', userRoutes)
 app.use('/api/jobs', jobRoutes);
 app.use("/api/resume", resumeRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use(errorHandler);
 
