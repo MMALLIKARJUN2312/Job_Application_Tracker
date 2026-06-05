@@ -16,6 +16,7 @@ import { exportJobsToCSV } from "../utils/exportJobs";
 import { exportJobsToPDF } from "../utils/exportPDF.js";
 import InsightsPanel from "../components/InsightsPanel";
 import ResumeUpload from "../components/ResumeUpload.jsx";
+import AICareerAssistant from "../components/AICareerAssistant";
 
 const Jobs = () => {
   const queryClient = useQueryClient();
@@ -134,6 +135,8 @@ const Jobs = () => {
           </button>
 
           <ResumeUpload />
+
+          <AICareerAssistant />
         </div>
       </div>
 
