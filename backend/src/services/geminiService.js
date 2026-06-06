@@ -52,3 +52,40 @@ ${question}
 
   return result.response.text();
 };
+
+export const recommendJobs = async (
+  skills,
+  currentJobs
+) => {
+  const prompt = `
+You are an expert career advisor.
+
+Resume Skills:
+${JSON.stringify(skills)}
+
+Current Jobs:
+${JSON.stringify(currentJobs)}
+
+Suggest:
+
+1. Best job roles
+2. Best career path
+3. Most suitable technologies
+
+Return JSON only:
+
+{
+  "recommendedRoles": [],
+  "careerPath": "",
+  "technologies": []
+}
+`;
+
+  const result = await model.generateContent(prompt);
+
+  const response = result.response.text();
+
+  return JSON.parse(
+    response.replace(/```json|```/g, "").trim()
+  );
+};
