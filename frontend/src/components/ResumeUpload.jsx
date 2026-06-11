@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import MatchScorePanel from "./MatchScorePanel";
 import { generateSuggestions } from "../utils/resumeSuggestions";
 import AIInsightsPanel from "./AIInsightsPanel";
+import RecommendedRoles from "./RecommendedRoles";
 
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
@@ -11,6 +12,7 @@ const ResumeUpload = () => {
   const [matchedJobs, setMatchedJobs] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [aiAnalysis, setAiAnalysis] = useState(null);
+  const [recommendations, setRecommendations] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleUpload = async () => {
@@ -35,6 +37,18 @@ const ResumeUpload = () => {
       setSkills(extractedSkills);
       setAiAnalysis(response.data.aiAnalysis);
       setSuggestions(generateSuggestions(extractedSkills));
+      const jobsResponse =
+        await apiInstance.get("/jobs");
+
+      const recommendationResponse =
+        await apiInstance.post("/recommendations",
+          {
+            skills: extractedSkills,
+            jobs: jobsResponse.data.jobs,
+          }
+        );
+
+      setRecommendations(recommendationResponse.data);
 
       const jobsResponse = await apiInstance.get("/jobs");
 
@@ -110,6 +124,12 @@ const ResumeUpload = () => {
               </span>
             ))}
           </div>
+
+          {recommendations && (
+            <RecommendedRoles
+              recommendations={recommendations}
+            />
+          )}
         </div>
       )}
 
