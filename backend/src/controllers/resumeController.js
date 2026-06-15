@@ -1,6 +1,9 @@
 import fs from "fs";
 import pdf from "pdf-parse";
 import { analyzeResumeWithAI } from "../services/geminiService.js";
+import ResumeChunk from "../models/ResumeChunk.js";
+import { chunkResume } from "../rag/chunkResume.js";
+import { createEmbedding } from "../rag/embeddingService.js";
 
 export const parseResume = async (req, res) => {
   try {
@@ -33,12 +36,10 @@ export const parseResume = async (req, res) => {
 
     // Extract matched skills
     const matchedSkills = predefinedSkills.filter((skill) =>
-      resumeText.includes(skill)
+      resumeText.includes(skill),
     );
 
-    const aiAnalysis = await analyzeResumeWithAI(
-      resumeText
-    );
+    const aiAnalysis = await analyzeResumeWithAI(resumeText);
 
     return res.status(200).json({
       matchedSkills,
@@ -96,3 +97,19 @@ export const calculateMatchScore = async (req, res) => {
     });
   }
 };
+
+const chunks = chunkResume(resumeText);
+
+await ResumeChunk.deleteMany({
+  userId: req.userId,
+});
+
+for (const chunk of chunks) {
+  const embedding = await createEmbedding(chunk);
+
+  await ResumeChunk.create({
+    userId: req.userId,
+    content: chunk,
+    embedding,
+  });
+}
