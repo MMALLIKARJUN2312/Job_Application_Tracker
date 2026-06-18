@@ -53,10 +53,7 @@ ${question}
   return result.response.text();
 };
 
-export const recommendJobs = async (
-  skills,
-  currentJobs
-) => {
+export const recommendJobs = async (skills, currentJobs) => {
   const prompt = `
 You are an expert career advisor.
 
@@ -85,7 +82,21 @@ Return JSON only:
 
   const response = result.response.text();
 
-  return JSON.parse(
-    response.replace(/```json|```/g, "").trim()
-  );
+  return JSON.parse(response.replace(/```json|```/g, "").trim());
+};
+
+export const generateRagAnswer = async (question, context) => {
+  const prompt = `
+Use ONLY the context below.
+
+Context:
+${context}
+
+Question:
+${question}
+`;
+
+  const result = await model.generateContent(prompt);
+
+  return result.response.text();
 };
