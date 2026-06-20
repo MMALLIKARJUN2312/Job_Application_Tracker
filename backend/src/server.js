@@ -9,6 +9,7 @@ import errorHandler from "./middlewares/errorMiddleware.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 import recommendationRoutes from "./routes/recommendationRoutes.js";
+import ragRoutes from "./routes/ragRoutes.js";
 
 // Load environment variables
 dotenv.config();
@@ -27,6 +28,7 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/recommendations", recommendationRoutes);
+app.use("/api/rag", ragRoutes);
 
 app.use(errorHandler);
 
