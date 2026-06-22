@@ -17,6 +17,7 @@ import { exportJobsToPDF } from "../utils/exportPDF.js";
 import InsightsPanel from "../components/InsightsPanel";
 import ResumeUpload from "../components/ResumeUpload.jsx";
 import AICareerAssistant from "../components/AICareerAssistant";
+import ResumeKnowledgeAssistant from "../components/ResumeKnowledgeAssistant";
 
 const Jobs = () => {
   const queryClient = useQueryClient();
@@ -137,6 +138,8 @@ const Jobs = () => {
           <ResumeUpload />
 
           <AICareerAssistant />
+
+          <ResumeKnowledgeAssistant />
         </div>
       </div>
 
