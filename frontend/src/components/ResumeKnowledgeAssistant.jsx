@@ -43,6 +43,13 @@ const ResumeKnowledgeAssistant = () => {
     }
   };
 
+  const suggestions = [
+    "What skills am I missing?",
+    "Which role suits me best?",
+    "How can I improve my resume?",
+    "What projects should I build next?",
+  ];
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl border shadow-sm p-6">
 
@@ -61,25 +68,35 @@ const ResumeKnowledgeAssistant = () => {
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`mb-4 ${
-              message.role === "user"
-                ? "text-right"
-                : "text-left"
-            }`}
+            className={`mb-4 ${message.role === "user"
+              ? "text-right"
+              : "text-left"
+              }`}
           >
             <div
               className={`inline-block px-4 py-3 rounded-lg max-w-[80%]
-              ${
-                message.role === "user"
+              ${message.role === "user"
                   ? "bg-purple-600 text-white"
                   : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-              }`}
+                }`}
             >
               {message.content}
             </div>
           </div>
         ))}
 
+      </div>
+
+      <div className="flex flex-wrap gap-2 mb-4">
+        {suggestions.map((item) => (
+          <button
+            key={item}
+            onClick={() => setQuestion(item)}
+            className="text-sm px-3 py-2 rounded-full border"
+          >
+            {item}
+          </button>
+        ))}
       </div>
 
       <div className="flex gap-3">
