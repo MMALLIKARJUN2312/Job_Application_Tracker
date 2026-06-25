@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import apiInstance from "../api/axios";
 import toast from "react-hot-toast";
+
 
 const ResumeKnowledgeAssistant = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const askQuestion = async () => {
@@ -50,6 +52,12 @@ const ResumeKnowledgeAssistant = () => {
     "What projects should I build next?",
   ];
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl border shadow-sm p-6">
 
@@ -84,6 +92,8 @@ const ResumeKnowledgeAssistant = () => {
             </div>
           </div>
         ))}
+
+        <div ref={messagesEndRef} />
 
       </div>
 
