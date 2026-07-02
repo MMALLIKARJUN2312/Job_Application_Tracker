@@ -10,6 +10,7 @@ import resumeRoutes from "./routes/resumeRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 import recommendationRoutes from "./routes/recommendationRoutes.js";
 import ragRoutes from "./routes/ragRoutes.js";
+import conversationRoutes from "./routes/conversationRoutes.js";
 
 // Load environment variables
 dotenv.config();
@@ -29,6 +30,7 @@ app.use("/api/resume", resumeRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/recommendations", recommendationRoutes);
 app.use("/api/rag", ragRoutes);
+app.use("/api/conversations", conversationRoutes);
 
 app.use(errorHandler);
 
